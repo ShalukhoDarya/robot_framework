@@ -1,15 +1,6 @@
 __pycache__/
-03_results/report.html
 __init__.py
-03_results/log.html
-03_results/output.xml
-03_results/selenium-screenshot-*.png
-03_results/geckodriver-*.log
+results
 .idea
-03_results/firefox/.pabotsuitenames
-03_results/chrome/.pabotsuitenames
-03_results/pabot_results
 .pabotsuitenames
 robot_tests.sh
-03_results/chrome/pabot_results
-03_results/firefox/pabot_results
