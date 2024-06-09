@@ -1,6 +1,5 @@
 __pycache__/
 __init__.py
-results
-.idea
+/results/
+/.idea/
 .pabotsuitenames
-robot_tests.sh
