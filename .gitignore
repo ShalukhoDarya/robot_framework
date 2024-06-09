@@ -1,0 +1,7 @@
+__pycache__/
+report.html
+__init__.py
+log.html
+output.xml
+selenium-screenshot-*.png
+geckodriver-*.log
