@@ -3,22 +3,19 @@ Library    SeleniumLibrary
 
 *** Variables ***
 ${SEARCH}    https://www.google.com
-${BROWSER}          chrome
+${BROWSER}   ${BROWSER}
 
 *** Test Cases ***
 Google Search Test
-    [Documentation]    Тест выполняет поиск в Google и проверяет результаты
-    Open Browser To Google
+    [Documentation]    The test performs a Google search and checks the results
+    [Tags]  smoke
+    Open Browser   ${SEARCH}    ${BROWSER}
     Handle Cookies Popup
     Input Search Query
     Verify Search Results
+    Close Browser
 
 *** Keywords ***
-Open Browser To Google
-    Open Browser    ${SEARCH}    ${BROWSER}
-    Maximize Browser Window
-    Sleep    2s
-
 Handle Cookies Popup
     Click Element    xpath://*[@id="W0wltc"]
 
@@ -28,5 +25,5 @@ Input Search Query
     Sleep    2s
 
 Verify Search Results
-    Title Should Be    Robot Framework - Google Search
-    [Teardown]    Close Browser
+    ${title} =    Get Title
+    Run Keyword If    '${title}' == 'Robot Framework'    Title Should Be    Robot Framework

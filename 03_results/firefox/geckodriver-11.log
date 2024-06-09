@@ -1,0 +1,15 @@
+1717954078499	geckodriver	INFO	Listening on 127.0.0.1:53411
+1717954078514	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/App ... s" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/yt/rxxtp4fj19x9jnr8d_ns0v8r0000gn/T/rust_mozprofileiKwL0A"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1717954078903	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-remote-allow-hosts"
+1717954079264	Marionette	INFO	Listening on port 53423
+WebDriver BiDi listening on ws://127.0.0.1:53412
+Read port: 53423
+1717954079466	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+DevTools listening on ws://127.0.0.1:53412/devtools/browser/c4d4ce0d-a4a5-4a30-adc3-fdd5194e3643
+JavaScript error: resource:///modules/sessionstore/SessionStore.sys.mjs, line 3573: TypeError: this._windows[aWindow.__SSi] is undefined
+1717954081541	Marionette	INFO	Stopped listening on port 53423
+console.error: "Failed to fetch https://spocs.getpocket.com/user:" "NetworkError when attempting to fetch resource."
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.

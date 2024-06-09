@@ -1,0 +1,12 @@
+1717953819853	geckodriver	INFO	Listening on 127.0.0.1:53042
+1717953819871	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/App ... s" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/yt/rxxtp4fj19x9jnr8d_ns0v8r0000gn/T/rust_mozprofilebaj1xb"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1717953820242	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-remote-allow-hosts"
+1717953820579	Marionette	INFO	Listening on port 53048
+WebDriver BiDi listening on ws://127.0.0.1:53043
+Read port: 53048
+1717953820830	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+DevTools listening on ws://127.0.0.1:53043/devtools/browser/7675d4f8-7764-4f19-aaa6-d4d539d98bee
+1717953822013	Marionette	INFO	Stopped listening on port 53048
