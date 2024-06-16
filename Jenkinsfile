@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // Название директории виртуального окружения
+        // Задаем переменную окружения для пути к Python
+        PYTHON_PATH = '/Library/Frameworks/Python.framework/Versions/3.11/bin/python3'
         VENV = 'venv'
-        // Директория, где находятся тесты Robot Framework
         ROBOT_TESTS_DIR = 'tests'
     }
 
@@ -16,18 +16,14 @@ pipeline {
                     sh 'python3 --version || true'
                     // Проверка версии Python 2
                     sh 'python --version || true'
-                    // Проверка доступности Python в PATH (Linux/macOS)
                     sh 'which python3 || true'
                     sh 'which python || true'
-                    // Проверка доступности Python в PATH (Windows)
-                    bat 'where python || true'
                 }
             }
         }
 
         stage('Checkout') {
             steps {
-                // Замените 'YOUR_GIT_REPOSITORY_URL' на URL вашего репозитория
                 git branch: 'main', url: 'https://github.com/ShalukhoDarya/robot_framework.git'
             }
         }
