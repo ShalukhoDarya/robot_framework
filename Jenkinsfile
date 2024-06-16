@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the correct branch
-                git branch: 'main', url: 'https://your-repository-url.git'
+                git branch: 'main', url: 'https://github.com/ShalukhoDarya/robot_framework.git'
             }
         }
         stage('Prepare') {
