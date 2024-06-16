@@ -2,61 +2,83 @@ pipeline {
     agent any
 
     environment {
+        // Define the virtual environment directory
+        VENV = 'venv'
+        // Define the directory where Robot Framework tests are located
         ROBOT_TESTS_DIR = 'tests'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the correct branch
+                // Checkout the correct branch from the specified Git repository
                 git branch: 'main', url: 'https://github.com/ShalukhoDarya/robot_framework.git'
             }
         }
-        stage('Prepare') {
+
+        stage('Setup Environment') {
             steps {
                 script {
-                    // Установка зависимостей из requirements.txt
-                    sh 'pip install -r requirements.txt'
+                    // Create a virtual environment if it doesn't exist
+                    sh "python -m venv --clear ${VENV}"
+                    // Activate the virtual environment
+                    sh ". ${VENV}/bin/activate"
+                    // Upgrade pip to the latest version
+                    sh "pip install --upgrade pip"
+                    // Install Robot Framework and SeleniumLibrary
+                    sh "pip install robotframework robotframework-seleniumlibrary"
                 }
             }
         }
+
         stage('Run Tests on Chrome') {
             steps {
                 script {
-                    // Создаем директорию для результатов тестов Chrome
-                    sh 'mkdir -p results/chrome'
-                    // Запуск тестов Robot Framework с использованием Chrome
-                    sh "robot --variable BROWSER:chrome --outputdir results/chrome ${ROBOT_TESTS_DIR}"
+                    // Activate the virtual environment
+                    sh ". ${VENV}/bin/activate"
+                    // Run Robot Framework tests with Chrome
+                    sh "robot --variable BROWSER:Chrome -d results/chrome ${ROBOT_TESTS_DIR}/"
+                }
+            }
+            post {
+                always {
+                    // Archive the test results
+                    archiveArtifacts artifacts: 'results/chrome/*.xml', allowEmptyArchive: true
+                    // Publish the Robot Framework test report
+                    publishHTML target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'results/chrome',
+                        reportFiles: 'report.html',
+                        reportName: 'Chrome Test Report'
+                    ]
                 }
             }
         }
+
         stage('Run Tests on Firefox') {
             steps {
                 script {
-                    // Создаем директорию для результатов тестов Firefox
-                    sh 'mkdir -p results/firefox'
-                    // Запуск тестов Robot Framework с использованием Firefox
-                    sh "robot --variable BROWSER:firefox --outputdir results/firefox ${ROBOT_TESTS_DIR}"
+                    // Activate the virtual environment
+                    sh ". ${VENV}/bin/activate"
+                    // Run Robot Framework tests with Firefox
+                    sh "robot --variable BROWSER:Firefox -d results/firefox ${ROBOT_TESTS_DIR}/"
                 }
             }
-        }
-        stage('Publish Results') {
-            steps {
-                script {
-                    // Публикация отчетов о тестах для Chrome
-                    publishRobotResults(
-                        outputPath: "results/chrome",
-                        reportFileName: 'report.html',
-                        logFileName: 'log.html',
-                        reportTitle: 'Chrome Test Results'
-                    )
-                    // Публикация отчетов о тестах для Firefox
-                    publishRobotResults(
-                        outputPath: "results/firefox",
-                        reportFileName: 'report.html',
-                        logFileName: 'log.html',
-                        reportTitle: 'Firefox Test Results'
-                    )
+            post {
+                always {
+                    // Archive the test results
+                    archiveArtifacts artifacts: 'results/firefox/*.xml', allowEmptyArchive: true
+                    // Publish the Robot Framework test report
+                    publishHTML target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'results/firefox',
+                        reportFiles: 'report.html',
+                        reportName: 'Firefox Test Report'
+                    ]
                 }
             }
         }
@@ -64,26 +86,8 @@ pipeline {
 
     post {
         always {
-            // Архивирование результатов тестов для Chrome
-            archiveArtifacts artifacts: "results/chrome/*", allowEmptyArchive: true
-            // Архивирование результатов тестов для Firefox
-            archiveArtifacts artifacts: "results/firefox/*", allowEmptyArchive: true
-            // Публикация HTML отчетов для Chrome
-            publishHTML(target: [
-                reportName : 'Chrome Robot Framework Report',
-                reportDir  : "results/chrome",
-                reportFiles: 'report.html',
-                alwaysLinkToLastBuild: true,
-                keepAll    : true
-            ])
-            // Публикация HTML отчетов для Firefox
-            publishHTML(target: [
-                reportName : 'Firefox Robot Framework Report',
-                reportDir  : "results/firefox",
-                reportFiles: 'report.html',
-                alwaysLinkToLastBuild: true,
-                keepAll    : true
-            ])
+            // Clean up the virtual environment after the build
+            cleanWs()
         }
     }
 }

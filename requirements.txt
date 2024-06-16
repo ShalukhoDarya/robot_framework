@@ -1,6 +1,0 @@
-robotframework==5.0.1
-robotframework-seleniumlibrary==6.0.0
-selenium==4.1.0
-robotframework-requests==0.9.3
-robotframework-datadriver==1.5.0
-robotframework-pabot==2.1.0
