@@ -1,5 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    ../libraries/CustomLibrary.py
 
 *** Variables ***
 ${SEARCH}    https://www.google.com
@@ -16,6 +17,9 @@ Google Search Test
     Close Browser
 
 *** Keywords ***
+Do custom thing
+    Do something special!
+
 Handle Cookies Popup
     Click Element    xpath://*[@id="W0wltc"]
 
