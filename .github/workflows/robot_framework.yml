@@ -4,6 +4,12 @@ on:
   pull_request:
     branches: [ main ]
 
+name: Robot Framework Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
 jobs:
   build:
 
@@ -15,10 +21,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Set up Python environment
+      run: |
+        python3 -m venv env
+        source env/bin/activate
+
     - name: Install dependencies
       run: |
-        pip3 install --upgrade pip
-        pip3 install robotframework
+        python3 -m pip install --upgrade pip
+        python3 -m pip install robotframework
         if [ ${{ matrix.browser }} = 'chrome' ]; then
           curl https://chromedriver.storage.googleapis.com/2.41/chromedriver_mac64.zip -o chromedriver.zip
           unzip chromedriver.zip
@@ -29,4 +40,6 @@ jobs:
         fi
 
     - name: Run tests
-      run: robot --variable BROWSER:${{ matrix.browser }} tests
+      run: |
+        source env/bin/activate
+        robot --variable BROWSER:${{ matrix.browser }} tests
