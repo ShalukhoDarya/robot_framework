@@ -13,18 +13,18 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v2
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install robotframework
+        python -m pip install --upgrade pip
+        python -m pip install robotframework
         if [ ${{ matrix.browser }} = 'chrome' ]; then
           curl https://chromedriver.storage.googleapis.com/2.41/chromedriver_mac64.zip -o chromedriver.zip
           unzip chromedriver.zip
@@ -36,5 +36,4 @@ jobs:
 
     - name: Run tests
       run: |
-        source env/bin/activate
         robot --variable BROWSER:${{ matrix.browser }} tests
