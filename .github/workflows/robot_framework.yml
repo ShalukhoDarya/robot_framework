@@ -4,12 +4,6 @@ on:
   pull_request:
     branches: [ main ]
 
-name: Robot Framework Tests
-
-on:
-  pull_request:
-    branches: [ main ]
-
 jobs:
   build:
 
