@@ -1,0 +1,32 @@
+name: Robot Framework Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        browser: [chrome, firefox]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        pip3 install --upgrade pip
+        pip3 install robotframework
+        if [ ${{ matrix.browser }} = 'chrome' ]; then
+          curl https://chromedriver.storage.googleapis.com/2.41/chromedriver_mac64.zip -o chromedriver.zip
+          unzip chromedriver.zip
+          mv chromedriver /usr/local/bin
+          rm chromedriver.zip
+        else
+          brew install geckodriver
+        fi
+
+    - name: Run tests
+      run: robot --variable BROWSER:${{ matrix.browser }} tests
