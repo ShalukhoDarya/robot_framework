@@ -12,17 +12,14 @@ jobs:
         browser: [chrome, firefox]
 
     steps:
-    - name: Use Node.js 20
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v4
 
-    - name: Set up Python environment
-      run: |
-        python3 -m venv env
-        source env/bin/activate
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
 
     - name: Install dependencies
       run: |
