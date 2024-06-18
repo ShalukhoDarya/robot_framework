@@ -23,9 +23,13 @@ jobs:
           pip install robotframework
           pip install robotframework-seleniumlibrary
           if [ "${{ matrix.browser }}" = "firefox" ]; then
-            wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+          wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
             tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
             sudo mv geckodriver /usr/local/bin/
+          elif [ "${{ matrix.browser }}" = "chrome" ]; then
+            wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.61/linux64/chromedriver-linux64.zip
+            unzip chromedriver_linux64.zip
+            sudo mv chromedriver /usr/local/bin/
           fi
 
       - name: Set up ChromeDriver
