@@ -18,23 +18,32 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
       - name: Install dependencies
         run: |
           pip install robotframework
           pip install robotframework-seleniumlibrary
-          if [ "${{ matrix.browser }}" = "firefox" ]; then
-          wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
-            tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
-            sudo mv geckodriver /usr/local/bin/
-          elif [ "${{ matrix.browser }}" = "chrome" ]; then
-            wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.61/linux64/chromedriver-linux64.zip
-            unzip chromedriver_linux64.zip
-            sudo mv chromedriver /usr/local/bin/
-          fi
 
-      - name: Set up ChromeDriver
+      - name: Install ChromeDriver
         if: matrix.browser == 'chrome'
-        uses: nanasess/setup-chromedriver@master
+        run: |
+          CHROME_VERSION=$(google-chrome-stable --version | cut -d " " -f3 | cut -d "." -f1)
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+
+      - name: Install GeckoDriver
+        if: matrix.browser == 'firefox'
+        run: |
+          FIREFOX_VERSION=$(firefox --version | cut -d " " -f3 | cut -d "." -f1)
+          wget "https://github.com/mozilla/geckodriver/releases/download/v$FIREFOX_VERSION.0/geckodriver-v$FIREFOX_VERSION.0-linux64.tar.gz"
+          tar -xvzf geckodriver-v$FIREFOX_VERSION.0-linux64.tar.gz
+          sudo mv geckodriver /usr/local/bin/
 
       - name: Run tests
         env:
