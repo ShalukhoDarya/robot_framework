@@ -1,22 +1,31 @@
-image: python:latest
+name: Robot Framework Tests
 
-stages:
-  - test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-before_script:
-  - pip install robotframework
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-run_robot_tests:
-  stage: test
-  script:
-    - robot tests/*.robot
-  artifacts:
-    paths:
-      - report.html
-      - log.html
-      - output.xml
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: always
+      - name: Install dependencies
+        run: pip install robotframework
+
+      - name: Run tests
+        run: robot tests/*.robot
+
+      - name: Archive test artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-artifacts
+          path: |
+            report.html
+            log.html
+            output.xml
