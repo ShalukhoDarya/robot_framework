@@ -28,22 +28,29 @@ jobs:
           pip install robotframework
           pip install robotframework-seleniumlibrary
 
-      - name: Install ChromeDriver
-        if: matrix.browser == 'chrome'
-        run: |
-          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+.\d+.\d+.\d+' | head -n 1)
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          wget "https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.62/linux64/chromedriver-linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
+      - name: Check Firefox version
+        run: firefox --version
 
       - name: Install GeckoDriver
         if: matrix.browser == 'firefox'
         run: |
           GECKODRIVER_VERSION=$(curl -s "https://api.github.com/repos/mozilla/geckodriver/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
-          wget "https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz"
+          wget "https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz"
           tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
           sudo mv geckodriver /usr/local/bin/
+
+      - name: Check Chrome version
+        run: chrome --version
+
+      - name: Install ChromeDriver
+        if: matrix.browser == 'chrome'
+        run: |
+          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+.\d+.\d+.\d+' | head -n 1)
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+
 
       - name: Run tests
         env:
