@@ -3,7 +3,6 @@ Library  SeleniumLibrary
 
 *** Variables ***
 ${URL}  https://demoqa.com/
-${BROWSER}   ${BROWSER}
 ${ELEMENTS_CARD}  xpath=//h5[text()='Elements']
 ${FORMS_CARD}  xpath=//h5[text()='Forms']
 ${ALERTS_CARD}  xpath=//h5[text()='Alerts, Frame & Windows']
