@@ -1,45 +1,47 @@
 name: Robot Framework Tests
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
-
-name: Robot Framework Tests
-
-on:
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build:
-
-    runs-on: macos-latest
+  run_tests:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         browser: [chrome, firefox]
-
     steps:
-    - uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Set up Python environment
-      run: |
-        python3 -m venv env
-        source env/bin/activate
+      - name: Install dependencies
+        run: |
+          pip install robotframework
+          pip install robotframework-seleniumlibrary
+          if [ "${{ matrix.browser }}" = "firefox" ]; then
+            wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+            tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
+            sudo mv geckodriver /usr/local/bin/
+          fi
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install robotframework
-        if [ ${{ matrix.browser }} = 'chrome' ]; then
-          curl https://chromedriver.storage.googleapis.com/2.41/chromedriver_mac64.zip -o chromedriver.zip
-          unzip chromedriver.zip
-          mv chromedriver /usr/local/bin
-          rm chromedriver.zip
-        else
-          brew install geckodriver
-        fi
+      - name: Set up ChromeDriver
+        if: matrix.browser == 'chrome'
+        uses: nanasess/setup-chromedriver@master
 
-    - name: Run tests
-      run: |
-        source env/bin/activate
-        robot --variable BROWSER:${{ matrix.browser }} tests
+      - name: Run tests
+        env:
+          BROWSER: ${{ matrix.browser }}
+        run: robot --variable BROWSER:${{ env.BROWSER }} tests/*.robot
+
+      - name: Archive test artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-artifacts
+          path: |
+            report.html
+            log.html
+            output.xml
