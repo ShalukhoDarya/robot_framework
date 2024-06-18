@@ -31,7 +31,7 @@ jobs:
       - name: Install ChromeDriver
         if: matrix.browser == 'chrome'
         run: |
-          CHROME_VERSION=$(google-chrome-stable --version | cut -d " " -f3 | cut -d "." -f1)
+          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+.\d+.\d+.\d+' | head -n 1)
           DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
           wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip
@@ -40,9 +40,9 @@ jobs:
       - name: Install GeckoDriver
         if: matrix.browser == 'firefox'
         run: |
-          FIREFOX_VERSION=$(firefox --version | cut -d " " -f3 | cut -d "." -f1)
-          wget "https://github.com/mozilla/geckodriver/releases/download/v$FIREFOX_VERSION.0/geckodriver-v$FIREFOX_VERSION.0-linux64.tar.gz"
-          tar -xvzf geckodriver-v$FIREFOX_VERSION.0-linux64.tar.gz
+          GECKODRIVER_VERSION=$(curl -s "https://api.github.com/repos/mozilla/geckodriver/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
+          wget "https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz"
+          tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
           sudo mv geckodriver /usr/local/bin/
 
       - name: Run tests
