@@ -4,6 +4,7 @@ Library    ../libraries/CustomLibrary.py
 
 *** Variables ***
 ${SEARCH}    https://www.google.com
+${BROWSER}   ff
 
 *** Test Cases ***
 Google Search Test

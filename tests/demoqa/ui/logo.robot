@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-Resource   /Users/darya_shalukho/robot_framework/resources/home.robot
+Resource   ../../../resources/home.robot
 
 *** Test Cases ***
 Open Home Page from All pages
