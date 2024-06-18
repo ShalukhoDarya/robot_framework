@@ -1,5 +1,4 @@
 *** Settings ***
-Library    SeleniumLibrary
 Resource   ../../resources/BrowserSetup.robot
 Library    ../libraries/CustomLibrary.py
 

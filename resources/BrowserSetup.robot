@@ -4,8 +4,8 @@ Library    SeleniumLibrary
 *** Keywords ***
 Setup Browser
     [Arguments]    ${browser}
-    Run Keyword If    '${browser}' == 'chrome'    Setup Chrome
-    Run Keyword If    '${browser}' == 'firefox'    Setup Firefox
+    Run Keyword If    '${BROWSER}' == 'chrome'    Setup Chrome
+    Run Keyword If    '${BROWSER}' == 'firefox'    Setup Firefox
 
 Setup Chrome
     ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
