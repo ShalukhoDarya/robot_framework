@@ -33,8 +33,9 @@ jobs:
         uses: nanasess/setup-chromedriver@master
 
       - name: Run tests
-        run: |
-          robot --variable BROWSER:${{ matrix.browser }} tests/*.robot
+        env:
+          BROWSER: ${{ matrix.browser }}
+        run: robot --variable BROWSER:${{ env.BROWSER }} tests/*.robot
 
       - name: Archive test artifacts
         uses: actions/upload-artifact@v2
