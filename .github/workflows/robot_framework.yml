@@ -50,8 +50,7 @@ jobs:
       - name: Install ChromeDriver
         if: matrix.browser == 'chrome'
         run: |
-          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+.\d+.\d+.\d+' | head -n 1)
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
           wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
