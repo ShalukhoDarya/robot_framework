@@ -11,17 +11,34 @@ on:
 jobs:
   run_tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chrome, firefox]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
           pip install robotframework
           pip install robotframework-seleniumlibrary
 
+      - name: Set up ChromeDriver
+        if: matrix.browser == 'chrome'
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Set up geckodriver
+        if: matrix.browser == 'firefox'
+        uses: mozillasecurity/geckodriver@v1
+
       - name: Run tests
-        run: robot tests/*.robot
+        run: |
+          robot --variable BROWSER:${{ matrix.browser }} tests/*.robot
 
       - name: Archive test artifacts
         uses: actions/upload-artifact@v2
