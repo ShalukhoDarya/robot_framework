@@ -39,8 +39,13 @@ jobs:
           tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
           sudo mv geckodriver /usr/local/bin/
 
-      - name: Check Chrome version
-        run: chrome --version
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Check Google Chrome version
+        run: google-chrome --version
 
       - name: Install ChromeDriver
         if: matrix.browser == 'chrome'
@@ -50,7 +55,6 @@ jobs:
           wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
-
 
       - name: Run tests
         env:
