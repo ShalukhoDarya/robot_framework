@@ -1,2 +1,2 @@
 def custom_keyword():
-    print(Do something special!)
+    print("Do something special!")
