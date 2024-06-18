@@ -13,16 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: pip install robotframework
+        run: |
+          pip install robotframework
+          pip install robotframework-seleniumlibrary
 
       - name: Run tests
         run: robot tests/*.robot
 
       - name: Archive test artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: test-artifacts
           path: |
