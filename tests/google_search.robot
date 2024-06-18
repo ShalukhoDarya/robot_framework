@@ -1,5 +1,5 @@
 *** Settings ***
-Resource   ../../resources/BrowserSetup.robot
+Resource   ../resources/BrowserSetup.robot
 Library    ../libraries/CustomLibrary.py
 
 *** Variables ***
