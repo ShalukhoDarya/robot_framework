@@ -13,21 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check Python
-      run: |
-        python3 --version || true
-        which python3 || true
 
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        repository: 'ShalukhoDarya/robot_framework'
-        ref: 'main'
 
-    - name: Setup Python Environment
+    - name: setup python
+      uses:
+            actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: install python packages
       run: |
-        python3 -m venv venv
-        source venv/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
 
