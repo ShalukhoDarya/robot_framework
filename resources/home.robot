@@ -4,6 +4,7 @@ Library  SeleniumLibrary
 *** Variables ***
 ${URL}  https://demoqa.com/
 ${BROWSER}   ff
+${BROWSER_OPTIONS}    headless
 ${ELEMENTS_CARD}  xpath=//h5[text()='Elements']
 ${FORMS_CARD}  xpath=//h5[text()='Forms']
 ${ALERTS_CARD}  xpath=//h5[text()='Alerts, Frame & Windows']
@@ -14,7 +15,7 @@ ${LOGO}  xpath=//img[@src='/images/Toolsqa.jpg']
 
 *** Keywords ***
 Open DemoQa Home Page
-    Open Browser  ${URL}  ${BROWSER}
+    Open Browser  ${URL}  ${BROWSER}  options=${BROWSER_OPTIONS}
 
 Go To Elements Card
     Click Element  ${ELEMENTS_CARD}

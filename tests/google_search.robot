@@ -5,12 +5,13 @@ Library    ../libraries/CustomLibrary.py
 *** Variables ***
 ${SEARCH}    https://www.google.com
 ${BROWSER}   chrome
+${BROWSER_OPTIONS}    headless
 
 *** Test Cases ***
 Google Search Test
     [Documentation]    The test performs a Google search and checks the results
     [Tags]  smoke
-    Open Browser   ${SEARCH}  ${BROWSER}
+    Open Browser   ${SEARCH}  ${BROWSER}  options=${BROWSER_OPTIONS}
     Handle Cookies Popup
     Input Search Query
     Verify Search Results
