@@ -14,7 +14,7 @@ ${LOGO}  xpath=//img[@src='/images/Toolsqa.jpg']
 
 *** Keywords ***
 Open DemoQa Home Page
-    Open Browser  ${URL}  ${BROWSER}
+    Open Browser  ${URL}
 
 Go To Elements Card
     Click Element  ${ELEMENTS_CARD}
