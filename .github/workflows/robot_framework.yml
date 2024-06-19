@@ -34,9 +34,8 @@ jobs:
       - name: Install GeckoDriver
         if: matrix.browser == 'firefox'
         run: |
-          GECKODRIVER_VERSION=$(curl -s "https://api.github.com/repos/mozilla/geckodriver/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
-          wget "https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz"
-          tar -xvzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
+          wget "https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz"
+          tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
           sudo mv geckodriver /usr/local/bin/
 
       - name: Install Google Chrome
