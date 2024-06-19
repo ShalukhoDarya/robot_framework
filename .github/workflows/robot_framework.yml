@@ -48,11 +48,6 @@ jobs:
         sudo mv geckodriver /usr/local/bin/
         sudo chmod +x /usr/local/bin/geckodriver
 
-    - name: Run Robot Tests on Firefox
-      run: |
-        source venv/bin/activate
-        robot --variable BROWSER:Firefox -d results/firefox tests/
-
     - name: Install Google Chrome
       run: |
           sudo apt-get update
@@ -68,10 +63,19 @@ jobs:
         unzip chromedriver_linux64.zip -d /usr/local/bin/
         sudo chmod +x /usr/local/bin/chromedriver
 
-    - name: Run Robot Tests on Chrome
+    - name: Run Robot Tests on Firefox
+      env:
+        FIREFOX_EXECUTABLE: /usr/bin/firefox
       run: |
         source venv/bin/activate
-        robot --variable BROWSER:Chrome -d results/chrome tests/
+        robot --variable BROWSER:Firefox --variable FIREFOX_EXECUTABLE:$FIREFOX_EXECUTABLE -d results/firefox tests/
+
+    - name: Run Robot Tests on Chrome
+      env:
+        CHROME_EXECUTABLE: /usr/bin/google-chrome
+      run: |
+        source venv/bin/activate
+        robot --variable BROWSER:Chrome --variable CHROME_EXECUTABLE:$CHROME_EXECUTABLE -d results/chrome tests/
 
     - name: Clean workspace
       if: always()
