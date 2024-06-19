@@ -33,8 +33,10 @@ jobs:
 
     - name: Install Firefox
       run: |
-        sudo apt-get update
-        sudo apt-get install -y firefox
+        wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64"
+        tar -xjf firefox.tar.bz2
+        sudo mv firefox /usr/local/lib/
+        sudo ln -s /usr/local/lib/firefox/firefox /usr/local/bin/
 
     - name: Check Firefox version
       run: |
@@ -46,36 +48,34 @@ jobs:
         wget https://github.com/mozilla/geckodriver/releases/download/$GECKO_DRIVER_VERSION/geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz
         tar -xvzf geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz
         sudo mv geckodriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/geckodriver
+        sudo chmod +x /usr/local/bin/geckodriver       
 
     - name: Install Google Chrome
       run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt --fix-broken install
 
     - name: Check Google Chrome version
       run: google-chrome --version
 
     - name: Install ChromeDriver
       run: |
-        CHROME_DRIVER_VERSION=`curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+        CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
         wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip -d /usr/local/bin/
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
         sudo chmod +x /usr/local/bin/chromedriver
 
     - name: Run Robot Tests on Firefox
-      env:
-        FIREFOX_EXECUTABLE: /usr/bin/firefox
       run: |
         source venv/bin/activate
-        robot --variable BROWSER:Firefox --variable FIREFOX_EXECUTABLE:$FIREFOX_EXECUTABLE -d results/firefox tests/
+        robot --variable BROWSER:Firefox -d results/firefox tests/
 
     - name: Run Robot Tests on Chrome
-      env:
-        CHROME_EXECUTABLE: /usr/bin/google-chrome
       run: |
         source venv/bin/activate
-        robot --variable BROWSER:Chrome --variable CHROME_EXECUTABLE:$CHROME_EXECUTABLE -d results/chrome tests/
+        robot --variable BROWSER:Chrome -d results/chrome tests/
 
     - name: Clean workspace
       if: always()
