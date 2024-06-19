@@ -31,24 +31,6 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install Firefox
-      run: |
-        wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64"
-        tar -xjf firefox.tar.bz2
-        sudo mv firefox /usr/local/lib/
-        sudo ln -s /usr/local/lib/firefox/firefox /usr/local/bin/
-
-    - name: Check Firefox version
-      run: |
-        firefox --version
-
-    - name: Install GeckoDriver
-      run: |
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
-        tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
-        sudo mv geckodriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/geckodriver 
-
     - name: Install Google Chrome
       run: |
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -65,11 +47,6 @@ jobs:
         unzip chromedriver_linux64.zip
         sudo mv chromedriver /usr/local/bin/
         sudo chmod +x /usr/local/bin/chromedriver
-
-    - name: Run Robot Tests on Firefox
-      run: |
-        source venv/bin/activate
-        robot --variable BROWSER:Firefox -d results/firefox tests/
 
     - name: Run Robot Tests on Chrome
       run: |
