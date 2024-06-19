@@ -44,11 +44,10 @@ jobs:
 
     - name: Install GeckoDriver
       run: |
-        GECKO_DRIVER_VERSION=`curl -sS https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")'`
-        wget https://github.com/mozilla/geckodriver/releases/download/$GECKO_DRIVER_VERSION/geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz
-        tar -xvzf geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+        tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
         sudo mv geckodriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/geckodriver       
+        sudo chmod +x /usr/local/bin/geckodriver 
 
     - name: Install Google Chrome
       run: |
