@@ -31,15 +31,41 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Robot Tests on Chrome
+    - name: Check Firefox version
+      run: firefox --version
+
+    - name: Install GeckoDriver
+      if: matrix.browser == 'firefox'
       run: |
-        source venv/bin/activate
-        robot --variable BROWSER:Chrome -d results/chrome tests/
+          wget "https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz"
+          tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
+          sudo mv geckodriver /usr/local/bin/
 
     - name: Run Robot Tests on Firefox
       run: |
         source venv/bin/activate
         robot --variable BROWSER:Firefox -d results/firefox tests/
+
+    - name: Install Google Chrome
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+    - name: Check Google Chrome version
+      run: google-chrome --version
+
+    - name: Install ChromeDriver
+      if: matrix.browser == 'chrome'
+      run: |
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
+          wget "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+
+    - name: Run Robot Tests on Chrome
+      run: |
+        source venv/bin/activate
+        robot --variable BROWSER:Chrome -d results/chrome tests/
 
     - name: Clean workspace
       if: always()
