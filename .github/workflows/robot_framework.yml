@@ -25,13 +25,12 @@ jobs:
 
     - name: install python packages
       run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install webdrivermanager
+           pip install --upgrade pip
+           pip install --upgrade -r requirements.txt
+           pip install --upgrade webdrivermanager
 
     - name: Update ChromeDriver
-      run: |
-        webdrivermanager chrome
+      run: webdrivermanager chrome
 
     - name: Install Google Chrome
       run: |
@@ -41,6 +40,9 @@ jobs:
 
     - name: Check Google Chrome version
       run: google-chrome --version
+
+    - name: Check ChromeDriver version
+      run: chromedriver --version
 
     - name: Run Robot Tests on Chrome
       run: |
