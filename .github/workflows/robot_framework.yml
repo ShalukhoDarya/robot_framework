@@ -12,13 +12,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: ppodgorsek/robot-framework:latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Python Packages
+      run: |
+        pip install --upgrade pip
+        pip install --upgrade -r requirements.txt
+
+    - name: Install Google Chrome
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt --fix-broken install
+
+    - name: Setup ChromeDriver
+      uses: nanasess/setup-chromedriver@v1.0.1
+      with:
+        chromedriver_version: 'latest'
+        chrome_version: 'stable'
+
+    - name: Check Google Chrome Version
+      run: google-chrome --version
+
+    - name: Check ChromeDriver Version
+      run: chromedriver --version
+
     - name: Run Robot Tests on Chrome
       run: |
-        robot --variable BROWSER:headlesschrome -d results/chrome tests/
+        robot --variable BROWSER:Chrome -d results/chrome tests/
+
+    - name: Clean Workspace
+      if: always()
+      run: |
+        sudo rm -rf *
