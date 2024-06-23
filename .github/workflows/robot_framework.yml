@@ -33,8 +33,26 @@ jobs:
       run: |
         webdrivermanager chrome
 
-    - name: Run tests
-      run: robot tests/*.robot
+    - name: Install Google Chrome
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt --fix-broken install
+
+    - name: Check Google Chrome version
+      run: google-chrome --version
+
+    - name: Install ChromeDriver
+      run: |
+        CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
+        wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/
+        sudo chmod +x /usr/local/bin/chromedriver
+
+    - name: Run Robot Tests on Chrome
+      run: |
+        robot --variable BROWSER:Chrome -d results/chrome tests/
 
     - name: Clean workspace
       if: always()
