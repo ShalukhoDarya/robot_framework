@@ -20,4 +20,4 @@ Run Browser Tests
 Create Firefox Profile
     ${profile}=    Evaluate    sys.modules['selenium.webdriver'].FirefoxProfile()    sys, selenium.webdriver
     Call Method    ${profile}    set_preference    browser.privatebrowsing.autostart    true
-    [Return]    ${profile.path}
+    Return    ${profile.path}
