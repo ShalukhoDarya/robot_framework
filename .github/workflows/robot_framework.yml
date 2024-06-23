@@ -13,43 +13,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: setup python
-      uses:
-            actions/setup-python@v4
+    - name: Setup Python
+      uses: actions/setup-python@v2
       with:
         python-version: '3.9'
 
-    - name: install python packages
+    - name: Install Python Packages
       run: |
         pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --upgrade -r requirements.txt
 
-    - name: Install Google Chrome
+    - name: Install Google Chrome 114
       run: |
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt --fix-broken install
+        sudo apt-get install -y google-chrome-stable=114.0.0.0-1
 
-    - name: Check Google Chrome version
+    - name: Setup ChromeDriver 114
+      run: |
+        CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_114`
+        wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip -P ~/
+        unzip ~/chromedriver_linux64.zip -d ~/
+        rm ~/chromedriver_linux64.zip
+        sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
+        sudo chown root:root /usr/local/bin/chromedriver
+        sudo chmod 0755 /usr/local/bin/chromedriver
+
+    - name: Check Google Chrome Version
       run: google-chrome --version
 
-    - name: Install ChromeDriver
-      run: |
-        CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
-        wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
+    - name: Check ChromeDriver Version
+      run: chromedriver --version
 
     - name: Run Robot Tests on Chrome
       run: |
         robot --variable BROWSER:Chrome -d results/chrome tests/
 
-    - name: Clean workspace
+    - name: Clean Workspace
       if: always()
       run: |
         sudo rm -rf *
