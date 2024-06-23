@@ -1,6 +1,8 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    ../libraries/CustomLibrary.py
+Resource    ../resources/fixtures.robot
+Suite Setup    Open Headless Browser
 
 *** Variables ***
 ${SEARCH}    https://www.google.com
