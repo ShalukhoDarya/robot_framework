@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+yaml
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,7 +53,7 @@ jobs:
       - run: |
           cd tests
           mkdir -p reports
-          pytest test_login_page.py --browser=chrome --html=reports/reports.html
+          pytest test_login_page.py --html=reports/reports.html
           chmod 777  /home/runner/work/python-se/python-se/tests/reports/
 
       - name: Set output
