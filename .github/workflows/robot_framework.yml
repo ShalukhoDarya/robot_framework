@@ -23,9 +23,15 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest robotframework
 
-      - name: Install Google Chrome 126
+      - name: Download Google Chrome 126
         run: |
           wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.63/linux64/chrome-linux64.zip
+
+      - name: Check contents of the Chrome archive
+        run: unzip -l chrome-linux64.zip
+
+      - name: Install Google Chrome 126
+        run: |
           unzip chrome-linux64.zip
           sudo mv -f chrome-linux64/google-chrome /usr/local/bin/google-chrome
           sudo chown root:root /usr/local/bin/google-chrome
