@@ -28,11 +28,10 @@ jobs:
           wget -N https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.63/linux64/chrome-headless-shell-linux64.zip
 
       - name: Check contents of the Chrome archive
-        run: unzip -l chrome-linux64.zip
+        run: unzip chrome-headless-shell-linux64.zip
 
       - name: Install Google Chrome Headless Shell 126
         run: |
-          unzip chrome-headless-shell-linux64.zip
           sudo mv -f chrome-headless-shell /usr/local/bin/
           sudo chown root:root /usr/local/bin/chrome-headless-shell
           sudo chmod 0755 /usr/local/bin/chrome-headless-shell
