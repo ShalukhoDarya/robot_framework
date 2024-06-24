@@ -2,3 +2,6 @@ robotframework
 selenium
 robotframework-seleniumlibrary
 robotframework-requests
+webdriver-manager
+pytest
+pytest-html
