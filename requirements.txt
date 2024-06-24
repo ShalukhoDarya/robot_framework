@@ -1,7 +1,5 @@
-robotframework
 selenium
+robotframework
 robotframework-seleniumlibrary
 robotframework-requests
 webdriver-manager
-pytest
-pytest-html
