@@ -27,8 +27,9 @@ jobs:
         run: |
           wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.63/linux64/chrome-linux64.zip
           unzip chrome-linux64.zip
-          sudo dpkg -i chrome-linux64.deb
-          sudo apt --fix-broken install
+          sudo mv -f chrome-linux64/google-chrome /usr/local/bin/google-chrome
+          sudo chown root:root /usr/local/bin/google-chrome
+          sudo chmod 0755 /usr/local/bin/google-chrome
 
       - name: Setup ChromeDriver 126
         run: |
