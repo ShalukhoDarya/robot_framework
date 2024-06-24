@@ -23,16 +23,12 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest robotframework
 
-      - name: Download Google Chrome Headless Shell 126
+      - name: Install Chrome Headless Shell 126
         run: |
           wget -N https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.63/linux64/chrome-headless-shell-linux64.zip
-
-      - name: Check contents of the Chrome archive
-        run: unzip chrome-headless-shell-linux64.zip
-
-      - name: Install Google Chrome Headless Shell 126
-        run: |
-          sudo mv -f chrome-headless-shell /usr/local/bin/
+          unzip chrome-headless-shell-linux64.zip
+          ls -l
+          sudo mv -f chrome-headless-shell-linux64/chrome-headless-shell /usr/local/bin/
           sudo chown root:root /usr/local/bin/chrome-headless-shell
           sudo chmod 0755 /usr/local/bin/chrome-headless-shell
 
